@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { CORE_CONCEPTS } from './data.js';
 import Header from './components/Header/Header.jsx';
 import CoreConcept from './components/CoreConcept/CoreConcept.jsx';
@@ -7,13 +7,28 @@ import { EXAMPLES } from './data.js';
 
 
 function App() {
-  const [selectedTopic, setSelectedTopic] = useState('components');
+  const [selectedTopic, setSelectedTopic] = useState();
 
   function handleClick(selectedButton) {
     setSelectedTopic(selectedButton)
     console.log(selectedTopic);
 
   };
+
+  let tabContent = <p>Please select a topic.</p>
+
+  if (selectedTopic) {
+      tabContent = 
+      <div id="tab-content">
+        <h3>{EXAMPLES[selectedTopic].title}</h3>
+        <p>{EXAMPLES[selectedTopic].description}</p>
+        <pre>
+          <code>
+            {EXAMPLES[selectedTopic].title}
+          </code>
+        </pre>
+      </div>
+  }
 
   return (
     <div>
@@ -36,31 +51,23 @@ function App() {
             />
           </ul>
         </section>
-        <section id='core-concepts'>
+        <section id='examples'>
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={() => handleClick('components')}>
+            <TabButton isSelected = {selectedTopic === 'components'} onSelect={() => handleClick('components')}>
               Components
             </TabButton>
-            <TabButton onSelect={() => handleClick('jsx')}>
+            <TabButton isSelected = {selectedTopic === 'jsx'} onSelect={() => handleClick('jsx')}>
               JSX
             </TabButton>
-            <TabButton onSelect={() => handleClick('props')}>
+            <TabButton isSelected = {selectedTopic === 'props'} onSelect={() => handleClick('props')}>
               Props
             </TabButton>
-            <TabButton onSelect={() => handleClick('state')}>
+            <TabButton isSelected = {selectedTopic === 'state'} onSelect={() => handleClick('state')}>
               State
             </TabButton>
           </menu>
-          <div id="tab-content">
-            <h3>{EXAMPLES[selectedTopic].title}</h3>
-            <p>{EXAMPLES[selectedTopic].description}</p>
-            <pre>
-              <code>
-                {EXAMPLES[selectedTopic].title}
-              </code>
-            </pre>
-          </div>
+          {tabContent}
         </section>
       </main>
     </div>
